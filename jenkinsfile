@@ -1,0 +1,30 @@
+pipeline{ 
+  agent any 
+    stages{ 
+      stage('checkout'){
+        steps{
+            git branch : 'main', url:'https://github.com/p-hariprasad/Devlab'
+         } 
+      }
+    stage('Depoly'){
+      steps{
+        sh '''
+          mkdir -p deployed_html
+          cp *.html deployed_html/
+          ...
+    }
+}
+
+    post {
+        success{
+            publishHTML(target:[
+                allowing:flase,
+                keepALL:true,
+                reportDir:'deployed_html',
+                reportFiles:'index.html',
+                reportName:'My webpage'
+            ])
+        }
+    }
+} 
+}
