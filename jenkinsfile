@@ -1,30 +1,33 @@
-pipeline{ 
-  agent any 
-    stages{ 
-      stage('checkout'){
-        steps{
-            git branch : 'main', url:'https://github.com/p-hariprasad/Devlab.git'
-         } 
-      }
-    stage('Depoly'){
-      steps{
-        sh '''
-          mkdir -p deployed_html
-          cp *.html deployed_html/
-          ...
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/p-hariprasad/Devlab.git'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                    mkdir -p deployed_html
+                    cp *.html deployed_html/
+                    # Add any other deployment commands here
+                '''
+            }
+        }
     }
-}
 
     post {
-        success{
-            publishHTML(target:[
-                allowing:flase,
-                keepALL:true,
-                reportDir:'deployed_html',
-                reportFiles:'index.html',
-                reportName:'My webpage'
+        success {
+            publishHTML(target: [
+                allowing: false,   // Corrected spelling here
+                keepAll: true,
+                reportDir: 'deployed_html',
+                reportFiles: 'index.html',
+                reportName: 'My webpage'
             ])
         }
     }
-} 
 }
